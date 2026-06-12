@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FB Pinturas - Sistema de Gerenciamento</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #e63946;
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --border: #e0e0e0;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: var(--dark);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        header span {
+            color: white;
+        }
+
+        /* Container Principal */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Painel de Status (Dashboard) */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 5px solid #ccc;
+        }
+
+        .card h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+
+        .card .number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        /* Formulário de Cadastro */
+        .form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .form-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            font-size: 1.4rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary);
+        }
+
+        button.btn-add {
+            grid-column: 1 / -1;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        button.btn-add:hover {
+            background-color: #c92a3a;
+        }
+
+        /* Tabela de Gerenciamento */
+        .table-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .table-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            font-size: 1.4rem;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--dark);
+            color: white;
+        }
+
+        /* Estilização dos Seletores de Status na Tabela */
+        .status-select {
+            padding: 0.4rem;
+            border-radius: 4px;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .status-aguardando { background-color: #ffe3e3; color: #e63946; }
+        .status-preparacao { background-color: #fff3cd; color: #856404; }
+        .status-pintura { background-color: #cce5ff; color: #004085; }
+        .status-pronto { background-color: #d4edda; color: #155724; }
+
+        /* Botão de Deletar/Dar Baixa */
+        .btn-delete {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .btn-delete:hover {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>FB <span>Pinturas</span></h1>
+        <span style="font-weight: 500;">Painel Operacional v2.0</span>
+    </header>
+
+    <div class="container">
+        
+        <div class="dashboard-grid">
+            <div class="card" style="border-left-color: #e63946;">
+                <h3>Aguardando</h3>
+                <div class="number" id="count-aguardando">0</div>
+            </div>
+            <div class="card" style="border-left-color: #856404;">
+                <h3>Em Preparação</h3>
+                <div class="number" id="count-preparacao">0</div>
+            </div>
+            <div class="card" style="border-left-color: #004085;">
+                <h3>Na Pintura</h3>
+                <div class="number" id="count-pintura">0</div>
+            </div>
+            <div class="card" style="border-left-color: #155724;">
+                <h3>Pronto para Entrega</h3>
+                <div class="number" id="count-pronto">0</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Dar Entrada em Novo Veículo</h2>
+            <form id="cadastro-veiculo">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="cliente">Nome do Cliente</label>
+                        <input type="text" id="cliente" placeholder="Ex: Roberto Silva" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="veiculo">Modelo do Carro</label>
+                        <input type="text" id="veiculo" placeholder="Ex: Corolla 2021" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="placa">Placa</label>
+                        <input type="text" id="placa" placeholder="Ex: BRA2E19" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="servico">Serviço Solicitado</label>
+                        <select id="servico">
+                            <option value="Pintura Completa">Pintura Completa</option>
+                            <option value="Pintura de Peça">Pintura de Peça (Parachoque/Porta)</option>
+                            <option value="Funilaria / Martelinho">Funilaria / Martelinho</option>
+                            <option value="Polimento Cristalizado">Polimento Cristalizado</option>
+                            <option value="Retoque Rápido">Retoque Rápido</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-add">Adicionar ao Pátio</button>
+            </form>
+        </div>
+
+        <div class="table-section">
+            <h2>Carros no Pátio / Controle de Fluxo</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Veículo</th>
+                            <th>Placa</th>
+                            <th>Serviço</th>
+                            <th>Status do Processo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-corpo">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Array principal que guardará os veículos em memória
+        let veiculos = JSON.parse(localStorage.getItem('fb_pinturas_veiculos')) || [];
+
+        // Elementos do DOM
+        const form = document.getElementById('cadastro-veiculo');
+        const tabelaCorpo = document.getElementById('tabela-corpo');
+
+        // Função para salvar no LocalStorage do navegador
+        function salvarDados() {
+            localStorage.setItem('fb_pinturas_veiculos', JSON.stringify(veiculos));
+            atualizarPainel();
+        }
+
+        // Função para atualizar os números do topo (Dashboard)
+        function atualizarPainel() {
+            const contadores = {
+                'Aguardando': 0,
+                'Preparação': 0,
+                'Pintura': 0,
+                'Pronto': 0
+            };
+
+            veiculos.forEach(v => {
+                if (contadores[v.status] !== undefined) {
+                    contadores[v.status]++;
+                }
+            });
+
+            document.getElementById('count-aguardando').innerText = contadores['Aguardando'];
+            document.getElementById('count-preparacao').innerText = contadores['Preparação'];
+            document.getElementById('count-pintura').innerText = contadores['Pintura'];
+            document.getElementById('count-pronto').innerText = contadores['Pronto'];
+        }
+
+        // Função para colorir o fundo do seletor baseado no status selecionado
+        function obterClasseStatus(status) {
+            switch(status) {
+                case 'Aguardando': return 'status-aguardando';
+                case 'Preparação': return 'status-preparacao';
+                case 'Pintura': return 'status-pintura';
+                case 'Pronto': return 'status-pronto';
+                default: return '';
+            }
+        }
+
+        // Função para renderizar a tabela na tela
+        function renderizarTabela() {
+            tabelaCorpo.innerHTML = '';
+
+            if (veiculos.length === 0) {
+                tabelaCorpo.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#999;">Nenhum veículo no pátio no momento.</td></tr>`;
+                atualizarPainel();
+                return;
+            }
+
+            veiculos.forEach((veiculo, index) => {
+                const tr = document.createElement('tr');
+
+                tr.innerHTML = `
+                    <td><strong>${veiculo.cliente}</strong></td>
+                    <td>${veiculo.veiculo}</td>
+                    <td><span style="font-family: monospace; background:#eee; padding:2px 6px; border-radius:4px;">${veiculo.placa.toUpperCase()}</span></td>
+                    <td>${veiculo.servico}</td>
+                    <td>
+                        <select class="status-select ${obterClasseStatus(veiculo.status)}" onchange="mudarStatus(${index}, this.value)">
+                            <option value="Aguardando" ${veiculo.status === 'Aguardando' ? 'selected' : ''}>Aguardando</option>
+                            <option value="Preparação" ${veiculo.status === 'Preparação' ? 'selected' : ''}>Preparação</option>
+                            <option value="Pintura" ${veiculo.status === 'Pintura' ? 'selected' : ''}>Na Pintura</option>
+                            <option value="Pronto" ${veiculo.status === 'Pronto' ? 'selected' : ''}>Pronto</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn-delete" onclick="removerVeiculo(${index})">Dar Baixa</button>
+                    </td>
+                `;
+
+                tabelaCorpo.appendChild(tr);
+            });
+
+            atualizarPainel();
+        }
+
+        // Função para cadastrar novo carro
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const novoVeiculo = {
+                cliente: document.getElementById('cliente').value,
+                veiculo: document.getElementById('veiculo').value,
+                placa: document.getElementById('placa').value,
+                servico: document.getElementById('servico').value,
+                status: 'Aguardando' // Todo carro entra como aguardando
+            };
+
+            veiculos.push(novoVeiculo);
+            salvarDados();
+            renderizarTabela();
+            form.reset();
+        });
+
+        // Função disparada ao alterar o Select de status na tabela
+        window.mudarStatus = function(index, novoStatus) {
+            veiculos[index].status = novoStatus;
+            salvarDados();
+            renderizarTabela(); // Recarrega para aplicar as novas cores de fundo
+        }
+
+        // Função para remover veículo (Dar baixa/entregar)
+        window.removerVeiculo = function(index) {
+            if (confirm("Deseja dar baixa e remover este veículo do sistema?")) {
+                veiculos.splice(index, 1);
+                salvarDados();
+                renderizarTabela();
+            }
+        }
+
+        // Inicialização do sistema na tela
+        renderizarTabela();
+    </script>
+</body>
+</html>
