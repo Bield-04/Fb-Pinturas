@@ -1,48 +1,60 @@
+Aqui está o código completo do sistema totalmente reformulado.
+
+### O que mudou:
+
+* **Novos Campos de Data:** Adicionados os campos de **Data de Entrada** e **Data de Saída** (substituindo o antigo prazo fixo).
+* **Campo de Serviço Livre:** O seletor de serviços foi substituído por um campo de texto dinâmico para o dono escrever o que quiser.
+* **Visual Premium "Midnight Carbon":** O layout foi totalmente redesenhado para um tema escuro moderno, estilo Dashboard SaaS, ideal para telas de oficinas e tablets. Conta com contrastes nítidos, efeitos de desfoque e um design muito mais profissional.
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FB Pinturas - Sistema de Gerenciamento VIP</title>
+    <title>FB Pinturas - Sistema VIP de Gerenciamento</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
         }
 
         :root {
-            --primary: #dc2626;
-            --primary-hover: #b91c1c;
-            --dark: #0f172a;
-            --dark-light: #1e293b;
-            --light: #f8fafc;
-            --border: #cbd5e1;
-            --success: #15803d;
-            --success-light: #dcfce7;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
         }
 
         body {
-            background-color: #f1f5f9;
-            color: #334155;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            padding-bottom: 3rem;
         }
 
         /* Cabeçalho */
         header {
-            background-color: var(--dark);
-            color: white;
-            padding: 1.2rem 2rem;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 1.5rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-bottom: 1px solid var(--border);
         }
 
         header h1 {
             font-size: 1.8rem;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: -0.5px;
         }
 
         header h1 span {
@@ -50,90 +62,93 @@
         }
 
         header .version {
-            background-color: var(--dark-light);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border: 1px solid #334155;
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
         /* Container Principal */
         .container {
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 2rem auto;
             padding: 0 1.5rem;
         }
 
-        /* Grid de Estatísticas e Financeiro */
+        /* Dashboard Grid */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .card {
-            background: white;
-            padding: 1.2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-            border-top: 4px solid #cbd5e1;
-            transition: transform 0.2s;
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         .card h3 {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            color: #64748b;
-            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
             font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .card .number {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 800;
-            color: var(--dark);
+            color: var(--text-main);
         }
 
-        /* Estilos específicos dos cards financeiros */
+        /* Cards específicos */
         .card-financial {
-            background: var(--dark-light);
-            color: white;
-            border-top: 4px solid var(--primary);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-left: 4px solid var(--primary);
         }
-        .card-financial h3 { color: #94a3b8; }
-        .card-financial .number { color: white; }
-        .card-lucro { border-top: 4px solid #22c55e; }
-        .card-lucro .number { color: #22c55e; }
+        .card-lucro {
+            border-left: 4px solid var(--success);
+        }
+        .card-lucro .number {
+            color: var(--success);
+        }
 
-        /* Formulários e Tabelas */
+        /* Caixas de Seções */
         .section-box {
-            background: white;
+            background: var(--bg-card);
             padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            margin-bottom: 2.5rem;
         }
 
         .section-box h2 {
             margin-bottom: 1.5rem;
-            color: var(--dark);
-            font-size: 1.3rem;
+            color: var(--text-main);
+            font-size: 1.4rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
+        /* Formulário */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1.2rem;
         }
 
@@ -146,24 +161,23 @@
             margin-bottom: 0.5rem;
             font-size: 0.85rem;
             font-weight: 600;
-            color: #475569;
+            color: var(--text-muted);
         }
 
-        .form-group input, .form-group select {
-            padding: 0.75rem;
+        .form-group input {
+            padding: 0.8rem;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             outline: none;
             font-size: 0.95rem;
-            color: var(--dark);
-            background-color: #f8fafc;
+            color: var(--text-main);
+            background-color: var(--bg-input);
             transition: all 0.2s;
         }
 
-        .form-group input:focus, .form-group select:focus {
+        .form-group input:focus {
             border-color: var(--primary);
-            background-color: white;
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
         }
 
         button.btn-add {
@@ -171,10 +185,10 @@
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 1rem;
+            padding: 1.2rem;
             font-size: 1rem;
             font-weight: 700;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: background 0.2s;
             margin-top: 0.5rem;
@@ -186,11 +200,11 @@
             background-color: var(--primary-hover);
         }
 
-        /* Tabela Dinâmica */
+        /* Tabelas */
         .table-responsive {
             overflow-x: auto;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            border: 1px solid var(--border);
         }
 
         table {
@@ -198,75 +212,78 @@
             border-collapse: collapse;
             text-align: left;
             font-size: 0.95rem;
+            background-color: #1e293b;
         }
 
         th, td {
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
+            padding: 1.2rem;
+            border-bottom: 1px solid var(--border);
         }
 
         th {
-            background-color: #f1f5f9;
-            color: #475569;
+            background-color: #0f172a;
+            color: var(--text-muted);
             font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 0.5px;
         }
 
         tr:hover {
-            background-color: #f8fafc;
+            background-color: rgba(255, 255, 255, 0.02);
         }
 
-        /* Badges e Status */
+        /* Statuses */
         .status-select {
-            padding: 0.5rem;
-            border-radius: 6px;
+            padding: 0.6rem;
+            border-radius: 8px;
             font-weight: 700;
-            border: none;
+            border: 1px solid transparent;
             cursor: pointer;
             font-size: 0.85rem;
             width: 100%;
+            outline: none;
         }
 
-        .status-aguardando { background-color: #fee2e2; color: #ef4444; }
-        .status-preparacao { background-color: #fef3c7; color: #d97706; }
-        .status-pintura { background-color: #e0f2fe; color: #0284c7; }
-        .status-pronto { background-color: var(--success-light); color: var(--success); }
+        .status-aguardando { background-color: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+        .status-preparacao { background-color: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3); }
+        .status-pintura { background-color: rgba(59, 130, 246, 0.15); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3); }
+        .status-pronto { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
 
         .badge-info {
             display: block;
             font-size: 0.8rem;
-            color: #64748b;
-            margin-top: 0.2rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
         }
 
         .btn-delete {
-            background-color: #ef4444;
-            color: white;
-            border: none;
-            padding: 0.5rem 0.8rem;
-            border-radius: 6px;
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
             font-size: 0.85rem;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
         .btn-delete:hover {
-            background-color: #b91c1c;
+            background-color: var(--danger);
+            color: white;
         }
 
         .text-money {
             font-weight: 700;
-            color: var(--dark);
+            color: var(--text-main);
         }
         .text-expense {
-            color: #ef4444;
+            color: #f87171;
             font-size: 0.85rem;
         }
         .text-profit {
-            color: #16a34a;
+            color: #34d399;
             font-weight: 700;
         }
     </style>
@@ -275,25 +292,25 @@
 
     <header>
         <h1>FB <span>Pinturas</span></h1>
-        <div class="version">Painel Operacional v3.0</div>
+        <div class="version">Painel Operacional v4.0</div>
     </header>
 
     <div class="container">
         
         <div class="dashboard-grid">
-            <div class="card" style="border-top-color: #ef4444;">
+            <div class="card" style="border-top: 4px solid var(--danger);">
                 <h3>Aguardando</h3>
                 <div class="number" id="count-aguardando">0</div>
             </div>
-            <div class="card" style="border-top-color: #d97706;">
+            <div class="card" style="border-top: 4px solid var(--warning);">
                 <h3>Em Preparação</h3>
                 <div class="number" id="count-preparacao">0</div>
             </div>
-            <div class="card" style="border-top-color: #0284c7;">
+            <div class="card" style="border-top: 4px solid var(--primary);">
                 <h3>Na Pintura</h3>
                 <div class="number" id="count-pintura">0</div>
             </div>
-            <div class="card" style="border-top-color: #16a34a;">
+            <div class="card" style="border-top: 4px solid var(--success);">
                 <h3>Prontos</h3>
                 <div class="number" id="count-pronto">0</div>
             </div>
@@ -308,7 +325,7 @@
         </div>
 
         <div class="section-box">
-            <h2>🛠️ Dar Entrada em Novo Veículo</h2>
+            <h2>🚗 Dar Entrada em Novo Veículo</h2>
             <form id="cadastro-veiculo">
                 <div class="form-grid">
                     <div class="form-group">
@@ -328,18 +345,16 @@
                         <input type="text" id="placa" placeholder="Ex: BRA2E19" required>
                     </div>
                     <div class="form-group">
-                        <label for="servico">Serviço Solicitado</label>
-                        <select id="servico">
-                            <option value="Pintura Completa">Pintura Completa</option>
-                            <option value="Pintura de Peça">Pintura de Peça</option>
-                            <option value="Funilaria / Martelinho">Funilaria / Martelinho</option>
-                            <option value="Polimento Cristalizado">Polimento Cristalizado</option>
-                            <option value="Retoque Rápido">Retoque Rápido</option>
-                        </select>
+                        <label for="servico">Serviço Solicitado (Escreva livremente)</label>
+                        <input type="text" id="servico" placeholder="Ex: Pintura lateral esquerda + Polimento" required>
                     </div>
                     <div class="form-group">
-                        <label for="prazo">Prazo de Entrega</label>
-                        <input type="date" id="prazo" required>
+                        <label for="data_entrada">Data de Entrada</label>
+                        <input type="date" id="data_entrada" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_saida">Data de Saída / Entrega</label>
+                        <input type="date" id="data_saida" required>
                     </div>
                     <div class="form-group">
                         <label for="preco_servico">Preço Cobrado (R$)</label>
@@ -355,22 +370,22 @@
         </div>
 
         <div class="section-box">
-            <h2>📋 Carros no Pátio / Controle de Fluxo Financeiro</h2>
+            <h2>📋 Controle de Fluxo e Finanças do Pátio</h2>
             <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
                             <th>Cliente / Contato</th>
                             <th>Veículo / Placa</th>
-                            <th>Serviço / Prazo</th>
-                            <th>Valores (Preço / Mat.)</th>
-                            <th>Lucro Individual</th>
+                            <th>Serviço Solicitado</th>
+                            <th>Cronograma (Entrada / Saída)</th>
+                            <th>Financeiro (Preço / Mat.)</th>
+                            <th>Lucro Líquido</th>
                             <th>Status do Processo</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-corpo">
-                        </tbody>
+                    <tbody id="tabela-corpo"></tbody>
                 </table>
             </div>
         </div>
@@ -383,17 +398,18 @@
         const form = document.getElementById('cadastro-veiculo');
         const tabelaCorpo = document.getElementById('tabela-corpo');
 
+        // Define a data de hoje como padrão no campo de entrada ao carregar a página
+        document.getElementById('data_entrada').valueAsDate = new Date();
+
         function salvarDados() {
             localStorage.setItem('fb_pinturas_veiculos', JSON.stringify(veiculos));
             atualizarPainel();
         }
 
-        // Formata os números para a moeda Real Brasileira
         function formatarMoeda(valor) {
             return parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        // Formata datas do padrão americano para o brasileiro (DD/MM/AAAA)
         function formatarData(dataString) {
             if(!dataString) return '-';
             const partes = dataString.split('-');
@@ -407,19 +423,15 @@
 
             veiculos.forEach(v => {
                 if (contadores[v.status] !== undefined) contadores[v.status]++;
-                
-                // Soma os valores financeiros globais
                 totalBruto += parseFloat(v.preco_servico || 0);
                 totalCustoMaterial += parseFloat(v.custo_material || 0);
             });
 
-            // Atualiza contadores visuais
             document.getElementById('count-aguardando').innerText = contadores['Aguardando'];
             document.getElementById('count-preparacao').innerText = contadores['Preparação'];
             document.getElementById('count-pintura').innerText = contadores['Pintura'];
             document.getElementById('count-pronto').innerText = contadores['Pronto'];
 
-            // Atualiza os lucros e faturamento no Dashboard
             document.getElementById('finance-bruto').innerText = formatarMoeda(totalBruto);
             document.getElementById('finance-lucro').innerText = formatarMoeda(totalBruto - totalCustoMaterial);
         }
@@ -438,7 +450,7 @@
             tabelaCorpo.innerHTML = '';
 
             if (veiculos.length === 0) {
-                tabelaCorpo.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#64748b; padding: 2rem;">Nenhum veículo no pátio registrado.</td></tr>`;
+                tabelaCorpo.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding: 3rem;">Nenhum veículo registrado no pátio.</td></tr>`;
                 atualizarPainel();
                 return;
             }
@@ -456,11 +468,14 @@
                     </td>
                     <td>
                         <strong>${veiculo.veiculo}</strong>
-                        <span class="badge-info"><span style="font-family: monospace; background:#e2e8f0; padding:2px 6px; border-radius:4px; color:#334155;">${veiculo.placa.toUpperCase()}</span></span>
+                        <span class="badge-info"><span style="font-family: monospace; background:#334155; padding:2px 6px; border-radius:4px; color:var(--text-main); font-size:0.8rem;">${veiculo.placa.toUpperCase()}</span></span>
+                    </td>
+                    <td style="max-width: 200px; word-wrap: break-word;">
+                        <strong>${veiculo.servico}</strong>
                     </td>
                     <td>
-                        ${veiculo.servico}
-                        <span class="badge-info" style="color: #ef4444; font-weight: 600;">📅 Prazo: ${formatarData(veiculo.prazo)}</span>
+                        <span class="badge-info" style="color: #60a5fa;">📥 Ent: ${formatarData(veiculo.data_entrada)}</span>
+                        <span class="badge-info" style="color: #f87171; font-weight: 600;">📤 Saí: ${formatarData(veiculo.data_saida)}</span>
                     </td>
                     <td>
                         <div class="text-money">${formatarMoeda(preco)}</div>
@@ -496,7 +511,8 @@
                 veiculo: document.getElementById('veiculo').value,
                 placa: document.getElementById('placa').value,
                 servico: document.getElementById('servico').value,
-                prazo: document.getElementById('prazo').value,
+                data_entrada: document.getElementById('data_entrada').value,
+                data_saida: document.getElementById('data_saida').value,
                 preco_servico: document.getElementById('preco_servico').value,
                 custo_material: document.getElementById('custo_material').value,
                 status: 'Aguardando'
@@ -506,6 +522,9 @@
             salvarDados();
             renderizarTabela();
             form.reset();
+            
+            // Reseta a data de hoje por padrão após limpar formulário
+            document.getElementById('data_entrada').valueAsDate = new Date();
         });
 
         window.mudarStatus = function(index, novoStatus) {
@@ -515,15 +534,17 @@
         }
 
         window.removerVeiculo = function(index) {
-            if (confirm("Deseja dar baixa e remover este veículo do sistema? (O faturamento total será recalculado)")) {
+            if (confirm("Deseja dar baixa e remover este veículo do sistema? (Os lucros serão recalculados)")) {
                 veiculos.splice(index, 1);
                 salvarDados();
                 renderizarTabela();
             }
         }
 
-        // Inicialização automática do layout carregado
+        // Inicialização
         renderizarTabela();
     </script>
 </body>
 </html>
+
+```
