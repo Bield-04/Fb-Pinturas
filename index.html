@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FB Pinturas - Sistema de Gerenciamento</title>
+    <title>FB Pinturas - Sistema de Gerenciamento VIP</title>
     <style>
         * {
             margin: 0;
@@ -13,92 +13,128 @@
         }
 
         :root {
-            --primary: #e63946;
-            --dark: #1d3557;
-            --light: #f8f9fa;
-            --border: #e0e0e0;
+            --primary: #dc2626;
+            --primary-hover: #b91c1c;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --light: #f8fafc;
+            --border: #cbd5e1;
+            --success: #15803d;
+            --success-light: #dcfce7;
         }
 
         body {
-            background-color: #f4f6f9;
-            color: #333;
+            background-color: #f1f5f9;
+            color: #334155;
         }
 
         /* Cabeçalho */
         header {
             background-color: var(--dark);
             color: white;
-            padding: 1rem 2rem;
+            padding: 1.2rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         header h1 {
             font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        header h1 span {
             color: var(--primary);
         }
 
-        header span {
-            color: white;
+        header .version {
+            background-color: var(--dark-light);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid #334155;
         }
 
         /* Container Principal */
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
         }
 
-        /* Painel de Status (Dashboard) */
+        /* Grid de Estatísticas e Financeiro */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
             margin-bottom: 2rem;
         }
 
         .card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border-left: 5px solid #ccc;
+            padding: 1.2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            border-top: 4px solid #cbd5e1;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
         }
 
         .card h3 {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            color: #777;
-            margin-bottom: 0.5rem;
+            color: #64748b;
+            margin-bottom: 0.4rem;
+            font-weight: 700;
         }
 
         .card .number {
-            font-size: 2.2rem;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 800;
             color: var(--dark);
         }
 
-        /* Formulário de Cadastro */
-        .form-section {
+        /* Estilos específicos dos cards financeiros */
+        .card-financial {
+            background: var(--dark-light);
+            color: white;
+            border-top: 4px solid var(--primary);
+        }
+        .card-financial h3 { color: #94a3b8; }
+        .card-financial .number { color: white; }
+        .card-lucro { border-top: 4px solid #22c55e; }
+        .card-lucro .number { color: #22c55e; }
+
+        /* Formulários e Tabelas */
+        .section-box {
             background: white;
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
             margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
         }
 
-        .form-section h2 {
+        .section-box h2 {
             margin-bottom: 1.5rem;
             color: var(--dark);
-            font-size: 1.4rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
         }
 
         .form-group {
@@ -108,20 +144,26 @@
 
         .form-group label {
             margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
+            color: #475569;
         }
 
         .form-group input, .form-group select {
-            padding: 0.7rem;
+            padding: 0.75rem;
             border: 1px solid var(--border);
-            border-radius: 4px;
+            border-radius: 6px;
             outline: none;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            color: var(--dark);
+            background-color: #f8fafc;
+            transition: all 0.2s;
         }
 
         .form-group input:focus, .form-group select:focus {
             border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
         }
 
         button.btn-add {
@@ -131,79 +173,101 @@
             border: none;
             padding: 1rem;
             font-size: 1rem;
-            font-weight: bold;
-            border-radius: 4px;
+            font-weight: 700;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.2s;
             margin-top: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         button.btn-add:hover {
-            background-color: #c92a3a;
+            background-color: var(--primary-hover);
         }
 
-        /* Tabela de Gerenciamento */
-        .table-section {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .table-section h2 {
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-            font-size: 1.4rem;
-        }
-
+        /* Tabela Dinâmica */
         .table-responsive {
             overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
+            font-size: 0.95rem;
         }
 
         th, td {
             padding: 1rem;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #e2e8f0;
         }
 
         th {
-            background-color: var(--dark);
-            color: white;
+            background-color: #f1f5f9;
+            color: #475569;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
         }
 
-        /* Estilização dos Seletores de Status na Tabela */
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Badges e Status */
         .status-select {
-            padding: 0.4rem;
-            border-radius: 4px;
-            font-weight: bold;
-            border: 1px solid #ccc;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-weight: 700;
+            border: none;
             cursor: pointer;
+            font-size: 0.85rem;
+            width: 100%;
         }
 
-        .status-aguardando { background-color: #ffe3e3; color: #e63946; }
-        .status-preparacao { background-color: #fff3cd; color: #856404; }
-        .status-pintura { background-color: #cce5ff; color: #004085; }
-        .status-pronto { background-color: #d4edda; color: #155724; }
+        .status-aguardando { background-color: #fee2e2; color: #ef4444; }
+        .status-preparacao { background-color: #fef3c7; color: #d97706; }
+        .status-pintura { background-color: #e0f2fe; color: #0284c7; }
+        .status-pronto { background-color: var(--success-light); color: var(--success); }
 
-        /* Botão de Deletar/Dar Baixa */
+        .badge-info {
+            display: block;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.2rem;
+        }
+
         .btn-delete {
-            background-color: #6c757d;
+            background-color: #ef4444;
             color: white;
             border: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.85rem;
             transition: background 0.2s;
         }
 
         .btn-delete:hover {
-            background-color: #dc3545;
+            background-color: #b91c1c;
+        }
+
+        .text-money {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .text-expense {
+            color: #ef4444;
+            font-size: 0.85rem;
+        }
+        .text-profit {
+            color: #16a34a;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -211,37 +275,49 @@
 
     <header>
         <h1>FB <span>Pinturas</span></h1>
-        <span style="font-weight: 500;">Painel Operacional v2.0</span>
+        <div class="version">Painel Operacional v3.0</div>
     </header>
 
     <div class="container">
         
         <div class="dashboard-grid">
-            <div class="card" style="border-left-color: #e63946;">
+            <div class="card" style="border-top-color: #ef4444;">
                 <h3>Aguardando</h3>
                 <div class="number" id="count-aguardando">0</div>
             </div>
-            <div class="card" style="border-left-color: #856404;">
+            <div class="card" style="border-top-color: #d97706;">
                 <h3>Em Preparação</h3>
                 <div class="number" id="count-preparacao">0</div>
             </div>
-            <div class="card" style="border-left-color: #004085;">
+            <div class="card" style="border-top-color: #0284c7;">
                 <h3>Na Pintura</h3>
                 <div class="number" id="count-pintura">0</div>
             </div>
-            <div class="card" style="border-left-color: #155724;">
-                <h3>Pronto para Entrega</h3>
+            <div class="card" style="border-top-color: #16a34a;">
+                <h3>Prontos</h3>
                 <div class="number" id="count-pronto">0</div>
+            </div>
+            <div class="card card-financial">
+                <h3>Faturamento Bruto</h3>
+                <div class="number" id="finance-bruto">R$ 0,00</div>
+            </div>
+            <div class="card card-financial card-lucro">
+                <h3>Lucro Líquido Total</h3>
+                <div class="number" id="finance-lucro">R$ 0,00</div>
             </div>
         </div>
 
-        <div class="form-section">
-            <h2>Dar Entrada em Novo Veículo</h2>
+        <div class="section-box">
+            <h2>🛠️ Dar Entrada em Novo Veículo</h2>
             <form id="cadastro-veiculo">
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="cliente">Nome do Cliente</label>
                         <input type="text" id="cliente" placeholder="Ex: Roberto Silva" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">WhatsApp / Telefone</label>
+                        <input type="tel" id="telefone" placeholder="Ex: (11) 99999-9999" required>
                     </div>
                     <div class="form-group">
                         <label for="veiculo">Modelo do Carro</label>
@@ -255,27 +331,40 @@
                         <label for="servico">Serviço Solicitado</label>
                         <select id="servico">
                             <option value="Pintura Completa">Pintura Completa</option>
-                            <option value="Pintura de Peça">Pintura de Peça (Parachoque/Porta)</option>
+                            <option value="Pintura de Peça">Pintura de Peça</option>
                             <option value="Funilaria / Martelinho">Funilaria / Martelinho</option>
                             <option value="Polimento Cristalizado">Polimento Cristalizado</option>
                             <option value="Retoque Rápido">Retoque Rápido</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="prazo">Prazo de Entrega</label>
+                        <input type="date" id="prazo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="preco_servico">Preço Cobrado (R$)</label>
+                        <input type="number" id="preco_servico" step="0.01" placeholder="Ex: 1500.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="custo_material">Custo do Material (R$)</label>
+                        <input type="number" id="custo_material" step="0.01" placeholder="Ex: 450.00" required>
+                    </div>
                 </div>
-                <button type="submit" class="btn-add">Adicionar ao Pátio</button>
+                <button type="submit" class="btn-add">Adicionar ao Pátio e Calcular</button>
             </form>
         </div>
 
-        <div class="table-section">
-            <h2>Carros no Pátio / Controle de Fluxo</h2>
+        <div class="section-box">
+            <h2>📋 Carros no Pátio / Controle de Fluxo Financeiro</h2>
             <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
-                            <th>Cliente</th>
-                            <th>Veículo</th>
-                            <th>Placa</th>
-                            <th>Serviço</th>
+                            <th>Cliente / Contato</th>
+                            <th>Veículo / Placa</th>
+                            <th>Serviço / Prazo</th>
+                            <th>Valores (Preço / Mat.)</th>
+                            <th>Lucro Individual</th>
                             <th>Status do Processo</th>
                             <th>Ações</th>
                         </tr>
@@ -289,41 +378,52 @@
     </div>
 
     <script>
-        // Array principal que guardará os veículos em memória
         let veiculos = JSON.parse(localStorage.getItem('fb_pinturas_veiculos')) || [];
 
-        // Elementos do DOM
         const form = document.getElementById('cadastro-veiculo');
         const tabelaCorpo = document.getElementById('tabela-corpo');
 
-        // Função para salvar no LocalStorage do navegador
         function salvarDados() {
             localStorage.setItem('fb_pinturas_veiculos', JSON.stringify(veiculos));
             atualizarPainel();
         }
 
-        // Função para atualizar os números do topo (Dashboard)
+        // Formata os números para a moeda Real Brasileira
+        function formatarMoeda(valor) {
+            return parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // Formata datas do padrão americano para o brasileiro (DD/MM/AAAA)
+        function formatarData(dataString) {
+            if(!dataString) return '-';
+            const partes = dataString.split('-');
+            return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+
         function atualizarPainel() {
-            const contadores = {
-                'Aguardando': 0,
-                'Preparação': 0,
-                'Pintura': 0,
-                'Pronto': 0
-            };
+            const contadores = { 'Aguardando': 0, 'Preparação': 0, 'Pintura': 0, 'Pronto': 0 };
+            let totalBruto = 0;
+            let totalCustoMaterial = 0;
 
             veiculos.forEach(v => {
-                if (contadores[v.status] !== undefined) {
-                    contadores[v.status]++;
-                }
+                if (contadores[v.status] !== undefined) contadores[v.status]++;
+                
+                // Soma os valores financeiros globais
+                totalBruto += parseFloat(v.preco_servico || 0);
+                totalCustoMaterial += parseFloat(v.custo_material || 0);
             });
 
+            // Atualiza contadores visuais
             document.getElementById('count-aguardando').innerText = contadores['Aguardando'];
             document.getElementById('count-preparacao').innerText = contadores['Preparação'];
             document.getElementById('count-pintura').innerText = contadores['Pintura'];
             document.getElementById('count-pronto').innerText = contadores['Pronto'];
+
+            // Atualiza os lucros e faturamento no Dashboard
+            document.getElementById('finance-bruto').innerText = formatarMoeda(totalBruto);
+            document.getElementById('finance-lucro').innerText = formatarMoeda(totalBruto - totalCustoMaterial);
         }
 
-        // Função para colorir o fundo do seletor baseado no status selecionado
         function obterClasseStatus(status) {
             switch(status) {
                 case 'Aguardando': return 'status-aguardando';
@@ -334,24 +434,41 @@
             }
         }
 
-        // Função para renderizar a tabela na tela
         function renderizarTabela() {
             tabelaCorpo.innerHTML = '';
 
             if (veiculos.length === 0) {
-                tabelaCorpo.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#999;">Nenhum veículo no pátio no momento.</td></tr>`;
+                tabelaCorpo.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#64748b; padding: 2rem;">Nenhum veículo no pátio registrado.</td></tr>`;
                 atualizarPainel();
                 return;
             }
 
             veiculos.forEach((veiculo, index) => {
                 const tr = document.createElement('tr');
+                const preco = parseFloat(veiculo.preco_servico || 0);
+                const custo = parseFloat(veiculo.custo_material || 0);
+                const lucroIndividual = preco - custo;
 
                 tr.innerHTML = `
-                    <td><strong>${veiculo.cliente}</strong></td>
-                    <td>${veiculo.veiculo}</td>
-                    <td><span style="font-family: monospace; background:#eee; padding:2px 6px; border-radius:4px;">${veiculo.placa.toUpperCase()}</span></td>
-                    <td>${veiculo.servico}</td>
+                    <td>
+                        <strong>${veiculo.cliente}</strong>
+                        <span class="badge-info">📞 ${veiculo.telefone}</span>
+                    </td>
+                    <td>
+                        <strong>${veiculo.veiculo}</strong>
+                        <span class="badge-info"><span style="font-family: monospace; background:#e2e8f0; padding:2px 6px; border-radius:4px; color:#334155;">${veiculo.placa.toUpperCase()}</span></span>
+                    </td>
+                    <td>
+                        ${veiculo.servico}
+                        <span class="badge-info" style="color: #ef4444; font-weight: 600;">📅 Prazo: ${formatarData(veiculo.prazo)}</span>
+                    </td>
+                    <td>
+                        <div class="text-money">${formatarMoeda(preco)}</div>
+                        <div class="text-expense">Material: -${formatarMoeda(custo)}</div>
+                    </td>
+                    <td>
+                        <span class="text-profit">${formatarMoeda(lucroIndividual)}</span>
+                    </td>
                     <td>
                         <select class="status-select ${obterClasseStatus(veiculo.status)}" onchange="mudarStatus(${index}, this.value)">
                             <option value="Aguardando" ${veiculo.status === 'Aguardando' ? 'selected' : ''}>Aguardando</option>
@@ -364,23 +481,25 @@
                         <button class="btn-delete" onclick="removerVeiculo(${index})">Dar Baixa</button>
                     </td>
                 `;
-
                 tabelaCorpo.appendChild(tr);
             });
 
             atualizarPainel();
         }
 
-        // Função para cadastrar novo carro
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
             const novoVeiculo = {
                 cliente: document.getElementById('cliente').value,
+                telefone: document.getElementById('telefone').value,
                 veiculo: document.getElementById('veiculo').value,
                 placa: document.getElementById('placa').value,
                 servico: document.getElementById('servico').value,
-                status: 'Aguardando' // Todo carro entra como aguardando
+                prazo: document.getElementById('prazo').value,
+                preco_servico: document.getElementById('preco_servico').value,
+                custo_material: document.getElementById('custo_material').value,
+                status: 'Aguardando'
             };
 
             veiculos.push(novoVeiculo);
@@ -389,23 +508,21 @@
             form.reset();
         });
 
-        // Função disparada ao alterar o Select de status na tabela
         window.mudarStatus = function(index, novoStatus) {
             veiculos[index].status = novoStatus;
             salvarDados();
-            renderizarTabela(); // Recarrega para aplicar as novas cores de fundo
+            renderizarTabela();
         }
 
-        // Função para remover veículo (Dar baixa/entregar)
         window.removerVeiculo = function(index) {
-            if (confirm("Deseja dar baixa e remover este veículo do sistema?")) {
+            if (confirm("Deseja dar baixa e remover este veículo do sistema? (O faturamento total será recalculado)")) {
                 veiculos.splice(index, 1);
                 salvarDados();
                 renderizarTabela();
             }
         }
 
-        // Inicialização do sistema na tela
+        // Inicialização automática do layout carregado
         renderizarTabela();
     </script>
 </body>
